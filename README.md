@@ -152,13 +152,10 @@ The expected output includes:
 The Android application successfully demonstrates how to access web services using HTTP requests. It performs GET and POST operations using the JSONPlaceholder API and displays the server responses. This experiment helps in understanding REST APIs, HTTP communication, JSON data, and network programming in Android applications.
 
 ## 14. Screenshots
-Add screenshots of your application here after running it in Android Studio.
+<img width="720" height="1600" alt="exp12 (1)" src="https://github.com/user-attachments/assets/730634bf-af20-4c35-abc0-d7d9c238016a" />
+<img width="720" height="1600" alt="exp12 (2)" src="https://github.com/user-attachments/assets/1994dacd-0d55-46f1-b43f-bd6c63a02769" />
+<img width="720" height="1600" alt="exp12 (3)" src="https://github.com/user-attachments/assets/6b3fcfe9-a4a3-4a3c-b14a-e6fc02859528" />
 
-Suggested screenshots:
-1. Application home screen.
-2. GET request displaying the list of posts.
-3. GET request displaying a specific post.
-4. POST request displaying the server response.
 
 ## Student Information
 **Name:** Shubham Shivaji Kondikire  
