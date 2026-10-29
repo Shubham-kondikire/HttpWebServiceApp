@@ -1,80 +1,166 @@
+
 # Experiment 12 – Access Web Services Using HTTP Requests in Android
 
-**Name:** Shubham Shivaji Kondikire
-**USN:** 25MCAR0102
-**Course:** MCA – Jain (Deemed-to-be University)
-**Platform:** Android (Kotlin + Jetpack Compose)
-
----
+## Student Details
+- **Name:** Shubham Shivaji Kondikire
+- **USN:** 25MCAR0102
+- **Experiment No.:** 12
 
 ## 1. Aim
-To develop an Android application that communicates with a web service (REST API) using HTTP **GET** and **POST** requests and displays the JSON response.
+To develop an Android application that demonstrates how to access web services using HTTP requests. The application performs GET and POST requests to communicate with a web server and display the response.
 
-## 2. Concept / Technology Behind It
+## 2. Concept
+Web services allow Android applications to exchange data with remote servers through the internet.
 
-| Concept | Explanation |
-|---|---|
-| **Web Service / REST API** | A server that exposes data over URLs (endpoints). The app sends a request, the server sends back data, usually in JSON. |
-| **HTTP Methods** | **GET** = read data, **POST** = send/create data. |
-| **HttpURLConnection** | Android/Java's built-in class used to open a connection to a URL, set the method, headers and read the response. No extra library needed. |
-| **JSON Parsing** | The response text is converted to objects using `org.json` (`JSONObject`, `JSONArray`). |
-| **INTERNET permission** | `<uses-permission android:name="android.permission.INTERNET"/>` must be in the manifest or every request fails. |
-| **Background thread (Coroutines)** | Android blocks network calls on the main thread (`NetworkOnMainThreadException`). Calls run in `Dispatchers.IO` via `withContext` and results update the Compose UI state. |
-| **HTTP Status Codes** | 200 = OK, 201 = Created, 404 = Not Found, etc. The app shows the status code with every response. |
+HTTP provides different request methods:
 
-**Analogy:** The app is a customer in a restaurant. The URL is the table number, GET is "show me the menu", POST is "place my order", the server is the kitchen, and JSON is the dish served back. The waiter (background thread) goes to the kitchen so the customer (UI) never freezes.
+- **GET Request:** Retrieves data from a server.
+- **POST Request:** Sends data to a server.
+- **JSON:** A lightweight format used to exchange data between applications and servers.
+- **HTTP Response:** Contains a status code and data returned by the server.
 
-**Web service used:** [JSONPlaceholder](https://jsonplaceholder.typicode.com) – a free fake REST API for testing (no API key needed).
+## 3. Technologies Used
+- Android Studio
+- Kotlin
+- Jetpack Compose
+- HTTP and REST API
+- JSONPlaceholder API
+- HttpURLConnection
+- Kotlin Coroutines
 
-## 3. Scenario Used for Demonstration
-A simple "API tester" app with three actions:
-1. **GET `/posts?_limit=10`** – fetch and list the first 10 posts.
-2. **GET `/posts/{id}`** – fetch one post by the ID typed by the user.
-3. **POST `/posts`** – send a new post containing the student's **Name** and **USN**; the server replies with `201 Created` and the new ID.
+## 4. Scenario
+This application demonstrates how an Android application communicates with a web service.
 
-## 4. Folder / File Structure
+The application uses the JSONPlaceholder API to perform the following operations:
 
-```
+1. Retrieve a list of posts using a GET request.
+2. Retrieve a specific post using its ID.
+3. Send new post data using a POST request.
+4. Display the HTTP response status and response data.
+
+## 5. Features
+- User-friendly interface built with Jetpack Compose.
+- Fetches a list of posts from a web service.
+- Retrieves a particular post by its ID.
+- Sends post data using a POST request.
+- Displays the server response.
+- Performs network operations using Kotlin Coroutines.
+- Uses background threads for network communication.
+- Includes internet permission in the Android manifest.
+
+## 6. Project Folder Structure
+
+```text
 HttpWebServiceApp/
-├── README.md                          -> This documentation
-├── .gitignore                         -> Ignores build files and local.properties
-├── build.gradle.kts                   -> Root Gradle file (plugin versions)
-├── settings.gradle.kts                -> Project name + repositories + modules
-├── gradle.properties                  -> Gradle / AndroidX settings
-├── gradle/wrapper/
-│   └── gradle-wrapper.properties      -> Gradle version used (8.7)
-├── docs/screenshots/                  -> Output + test case screenshots
-│   ├── output.png
-│   ├── testcase1_get_all_posts.png
-│   ├── testcase2_get_post_by_id.png
-│   └── testcase3_post_name_usn.png
-└── app/
-    ├── build.gradle.kts               -> App dependencies (Compose only, no network library)
-    ├── proguard-rules.pro
-    └── src/main/
-        ├── AndroidManifest.xml        -> INTERNET permission + launcher activity
-        ├── java/com/shubham/httpdemo/
-        │   ├── ApiClient.kt           -> HTTP GET / POST helper using HttpURLConnection
-        │   └── MainActivity.kt        -> Compose UI, button handlers, JSON parsing
-        └── res/values/
-            └── strings.xml            -> App name
+├── app/
+│   ├── src/
+│   │   └── main/
+│   │       ├── java/
+│   │       │   └── com/
+│   │       │       └── shubham/
+│   │       │           └── httpdemo/
+│   │       │               ├── MainActivity.kt
+│   │       │               └── ApiClient.kt
+│   │       └── AndroidManifest.xml
+│   └── build.gradle.kts
+├── gradle/
+├── build.gradle.kts
+├── settings.gradle.kts
+└── README.md
 ```
 
-## 5. How to Run
-1. Open the project in **Android Studio** (File > Open > `HttpWebServiceApp`), wait for Gradle sync.
-2. Run on an emulator or a real phone **with internet access**.
-3. Tap the buttons and observe the status code + response.
+## 7. Important Files
 
-## 6. Output Screenshot
-![Output](docs/screenshots/output.png)
+### MainActivity.kt
+- Creates the application interface using Jetpack Compose.
+- Provides buttons to perform GET and POST requests.
+- Displays the response received from the server.
 
-## 7. Test Cases
+### ApiClient.kt
+- Handles HTTP communication with the web service.
+- Uses `HttpURLConnection` to establish network connections.
+- Sends HTTP requests and reads server responses.
+- Uses Kotlin Coroutines to perform network operations in the background.
 
-| # | Test Case | Steps | Expected Result | Screenshot |
-|---|---|---|---|---|
-| 1 | GET all posts | Tap **GET /posts (first 10)** | Status `HTTP 200`, list of 10 post titles shown | ![TC1](docs/screenshots/testcase1_get_all_posts.png) |
-| 2 | GET post by ID | Enter ID `5`, tap **GET by ID** | Status `HTTP 200`, title/body of post 5 shown | ![TC2](docs/screenshots/testcase2_get_post_by_id.png) |
-| 3 | POST with Name + USN | Tap **POST /posts** | Status `HTTP 201`, JSON response shows title `Experiment 12 by Shubham Shivaji Kondikire`, body `USN: 25MCAR0102` and new id `101` (app bar also shows Name + USN) | ![TC3](docs/screenshots/testcase3_post_name_usn.png) |
+### AndroidManifest.xml
+- Declares the internet permission required for network communication.
+- Contains the main application activity configuration.
 
-## 8. Result
-The application successfully accessed a web service using HTTP GET and POST requests, parsed the JSON response and displayed it in the Android UI.
+## 8. API Used
+
+**API Name:** JSONPlaceholder
+
+Website: https://jsonplaceholder.typicode.com/
+
+### GET Request – Fetch Posts
+```text
+https://jsonplaceholder.typicode.com/posts?_limit=10
+```
+
+This request retrieves a list of posts from the server.
+
+### GET Request – Fetch a Specific Post
+```text
+https://jsonplaceholder.typicode.com/posts/1
+```
+
+This request retrieves the post with ID 1.
+
+### POST Request – Create a Post
+```text
+https://jsonplaceholder.typicode.com/posts
+```
+
+The application sends post data containing a title, body, and user ID.
+
+Note: JSONPlaceholder is a testing API. A successful POST request simulates creating a post and does not permanently save the data.
+
+## 9. Test Cases
+
+| Test Case | Operation | Expected Result |
+|---|---|---|
+| 1 | Fetch all posts | Displays the server response containing posts. |
+| 2 | Fetch a specific post | Displays the post corresponding to the requested ID. |
+| 3 | Send a POST request | Displays the response returned by the server. |
+| 4 | Check HTTP status | Displays the response status code. |
+| 5 | Network error | Handles the error and displays the relevant result. |
+
+## 10. Additional Test Cases
+- Test the application with an active internet connection.
+- Test the application when the internet connection is unavailable.
+- Retrieve posts using different post IDs.
+- Verify the response received from the API.
+- Check the application's behavior when a request fails.
+
+## 11. Output
+The application displays buttons to perform HTTP operations and shows the response received from the JSONPlaceholder server.
+
+The expected output includes:
+- A list of posts retrieved using GET.
+- Details of a specific post.
+- A response from the server after a POST request.
+- HTTP status information.
+
+## 12. Advantages
+- Demonstrates communication between an Android application and a web service.
+- Helps understand REST API integration.
+- Provides practical experience with HTTP requests.
+- Demonstrates asynchronous network operations using Kotlin Coroutines.
+- Uses JSON data for exchanging information.
+
+## 13. Conclusion
+The Android application successfully demonstrates how to access web services using HTTP requests. It performs GET and POST operations using the JSONPlaceholder API and displays the server responses. This experiment helps in understanding REST APIs, HTTP communication, JSON data, and network programming in Android applications.
+
+## 14. Screenshots
+Add screenshots of your application here after running it in Android Studio.
+
+Suggested screenshots:
+1. Application home screen.
+2. GET request displaying the list of posts.
+3. GET request displaying a specific post.
+4. POST request displaying the server response.
+
+## Student Information
+**Name:** Shubham Shivaji Kondikire  
+**USN:** 25MCAR0102  
+**Experiment:** 12 – Access Web Services Using HTTP Requests in Android
